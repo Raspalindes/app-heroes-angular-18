@@ -6,6 +6,7 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({

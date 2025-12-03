@@ -5,6 +5,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+
 import { environment } from '../../../environments/environment';
 import { Hero } from '../interfaces/hero.interface';
 
@@ -16,7 +17,6 @@ export class HeroesService {
    * Inyecta HttpClient para realizar peticiones HTTP a la API.
    */
   private readonly _http = inject(HttpClient);
-
 
   /**
    * URL base de la API de héroes.

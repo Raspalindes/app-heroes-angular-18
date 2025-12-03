@@ -1,5 +1,3 @@
-
-
 /**
  * Componente que muestra el detalle de un héroe.
  * Utiliza el servicio de héroes para obtener los datos y los gestiona con signals.
@@ -8,6 +6,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Hero } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/heroes.service';
 
@@ -62,7 +61,7 @@ export class HeroDetailComponent implements OnInit {
     this._heroService.getHeroById(heroId).subscribe({
       next: (hero: Hero) => {
         this.$hero.set(hero);
-      }
+      },
     });
   }
 }
