@@ -11,6 +11,11 @@ import { HeroesService } from '../../services/heroes.service';
 import { FORM_CONTROLS_CONFIG } from './hero-form.config';
 import { NEW_ID } from './hero-form.constants';
 
+/**
+ * Formulario reutilizable para crear y editar héroes.
+ * Si recibe un id distinto de 'new', carga los datos para editar.
+ * Si recibe 'new', prepara el formulario para crear.
+ */
 @Component({
   selector: 'app-hero-form',
   standalone: true,
@@ -20,9 +25,9 @@ import { NEW_ID } from './hero-form.constants';
 })
 export class HeroFormComponent {
   /** ID del héroe recibido desde la ruta. 'new' para crear, ID para editar. */
-  public id = input.required<string>();
+  public heroId = input.required<string>();
 
-  /** Signal que almacena el héroe actual cuando está en modo edición. */
+  /** Signal que almacena el héroe actual cuando está en modo edición (para mostrar imagen). */
   public hero = signal<Hero | null>(null);
 
   /** Servicio para operaciones CRUD de héroes. */
@@ -34,69 +39,83 @@ export class HeroFormComponent {
   /** Router de Angular para navegación programática. */
   private readonly _router = inject(Router);
 
-  /** Formulario reactivo con validaciones. */
+  /** Formulario reactivo con los controles definidos. */
   public heroForm: FormGroup = this._fb.group(FORM_CONTROLS_CONFIG);
 
   /** Constante que identifica la creación de un nuevo héroe. */
   public readonly newId = NEW_ID;
 
   constructor() {
-    toObservable(this.id)
+    toObservable(this.heroId)
       .pipe(
+        // Maneja el caso 'new' como efecto secundario
         tap(id => {
           if (id === NEW_ID) {
             this.hero.set(null);
             this.heroForm.reset();
           }
         }),
+        // Solo deja pasar IDs que NO son 'new'
         filter(id => id !== NEW_ID),
+        // Por cada ID válido, obtiene el héroe
+        // switchMap cancela peticiones anteriores automáticamente
         switchMap(id => this._heroesService.getHeroById(id)),
+        // Se desuscribe automáticamente cuando el componente se destruye
         takeUntilDestroyed()
       )
       .subscribe({
-        next: heroById => {
+        next: (heroById: Hero) => {
           if (heroById) {
             this.hero.set(heroById);
             this.heroForm.patchValue(heroById);
           }
         },
-        error: err => {
-          console.error('Error al cargar héroe:', err);
-        },
       });
   }
 
-  public goBack(): void {
-    this._router.navigate(['/heroes/list']);
-  }
-
-  public onSubmit(): void {
-    if (this.heroForm.invalid) {
+  /**
+   * Guarda el héroe: si es edición, actualiza; si es nuevo, crea.
+   */
+  public onSave(): void {
+    if (!this.heroForm.valid) {
       this.heroForm.markAllAsTouched();
       return;
     }
-    const id = this.id();
+
+    const id = this.heroId();
     if (id === NEW_ID) {
-      this._createHero();
+      this._addHero();
     } else {
-      this._updateHero(id!);
+      this._editHero(id);
     }
   }
 
-  private _createHero(): void {
+  /**
+   * Crea un nuevo héroe usando el servicio.
+   * @private
+   */
+  private _addHero(): void {
     this._heroesService.createHero(this.heroForm.value).subscribe({
-      next: () => {
-        this.goBack();
-      },
+      next: () => this.goBack(),
     });
   }
 
-  private _updateHero(id: string): void {
+  /**
+   * Edita un héroe existente usando el servicio.
+   * @private
+   * @param id - ID del héroe a editar
+   */
+  private _editHero(id: string): void {
     const updatedHero: Hero = { ...this.heroForm.value, id };
     this._heroesService.updateHero(updatedHero).subscribe({
-      next: () => {
-        this.goBack();
-      },
+      next: () => this.goBack(),
     });
+  }
+
+  /**
+   * Navega de vuelta al listado de héroes.
+   */
+  public goBack(): void {
+    this._router.navigate(['/heroes/list']);
   }
 }

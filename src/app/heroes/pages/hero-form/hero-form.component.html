@@ -7,7 +7,7 @@
 
     <!-- Título del formulario -->
     <h1 class="hero-form__title">
-      {{ id() === newId ? 'Crear Héroe' : 'Editar Héroe' }}
+      {{ heroId() === newId ? 'Crear Héroe' : 'Editar Héroe' }}
     </h1>
 
     <!-- Tarjeta del formulario -->
@@ -29,7 +29,7 @@
       <!-- Formulario -->
       <form
         [formGroup]="heroForm"
-        (ngSubmit)="onSubmit()"
+        (ngSubmit)="onSave()"
         class="hero-form__form">
         <!-- Campo: Superhero -->
         <div class="hero-form__field">
@@ -134,7 +134,7 @@
         <!-- Botones de acción -->
         <div class="hero-form__actions">
           <button type="submit" class="hero-form__btn hero-form__btn--save">
-            {{ id() === newId ? 'Crear' : 'Guardar' }}
+            {{ heroId() === newId ? 'Crear' : 'Guardar' }}
           </button>
           <button
             type="button"

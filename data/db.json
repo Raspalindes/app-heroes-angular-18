@@ -10,13 +10,13 @@
       "id": "batman"
     },
     {
-      "id": "superman",
-      "img": "dc-superman",
       "superhero": "Superman",
       "publisher": "DC Comics",
       "alter_ego": "Kal-El",
       "first_appearance": "Action Comics #1",
-      "alt_img": null
+      "img": "dc-superman",
+      "alt_img": null,
+      "id": "superman"
     },
     {
       "id": "flash",
@@ -163,13 +163,13 @@
       "alt_img": null
     },
     {
-      "id": "cyclops",
-      "img": "marvel-cyclops",
       "superhero": "Cyclops",
       "publisher": "Marvel Comics",
       "alter_ego": "Scott Summers",
       "first_appearance": "X-Men #1",
-      "alt_img": null
+      "img": "marvel-cyclops",
+      "alt_img": null,
+      "id": "cyclops"
     },
     {
       "id": "silver",
@@ -179,24 +179,6 @@
       "alter_ego": "Norrin Radd",
       "first_appearance": "The Fantastic Four #48",
       "alt_img": null
-    },
-    {
-      "superhero": "pablo",
-      "publisher": "pablo",
-      "alter_ego": "pablo",
-      "first_appearance": "pablo",
-      "img": null,
-      "alt_img": null,
-      "id": "a9WF3U5"
-    },
-    {
-      "superhero": "dfgdfg",
-      "publisher": "dfgdfg",
-      "alter_ego": "dfgdfg",
-      "first_appearance": "dfgdfg",
-      "img": null,
-      "alt_img": null,
-      "id": "Krgzcr-"
     }
   ]
 }
