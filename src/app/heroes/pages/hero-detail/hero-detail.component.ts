@@ -20,20 +20,16 @@ import { HeroesService } from '../../services/heroes.service';
   styleUrl: './hero-detail.component.scss',
 })
 export class HeroDetailComponent {
-  /**  Inyecta el servicio de héroes para obtener los datos desde la API. */
+  /**Inyecta el servicio de héroes para obtener los datos desde la API.*/
   private readonly _heroService = inject(HeroesService);
 
-  /** Inyecta el servicio de navegación de Angular para cambiar de ruta. */
+  /**Inyecta el servicio de navegación de Angular para cambiar de ruta.*/
   private readonly _router = inject(Router);
 
-  /**
-   * ID del héroe recibido por parámetro de ruta.
-   */
+  /**ID del héroe recibido por parámetro de ruta.*/
   public id = input.required<string>();
 
-  /**
-   * Signal que almacena el héroe actual obtenido del servicio.
-   */
+  /**Signal que almacena el héroe actual obtenido del servicio.*/
   public $hero = toSignal<Hero>(
     toObservable(this.id).pipe(
       filter(Boolean),
@@ -41,9 +37,7 @@ export class HeroDetailComponent {
     )
   );
 
-  /**
-   * Navega de vuelta a la lista de héroes.
-   */
+  /**Navega de vuelta a la lista de héroes.*/
   public goBack(): void {
     this._router.navigate(['/heroes/list']);
   }

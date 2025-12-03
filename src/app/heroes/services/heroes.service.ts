@@ -13,9 +13,7 @@ import { Hero } from '../interfaces/hero.interface';
   providedIn: 'root',
 })
 export class HeroesService {
-  /**
-   * Inyecta HttpClient para realizar peticiones HTTP a la API.
-   */
+  /** Inyecta HttpClient para realizar peticiones HTTP a la API. */
   private readonly _http = inject(HttpClient);
 
   /**URL base de la API de héroes.*/

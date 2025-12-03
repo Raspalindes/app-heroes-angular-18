@@ -17,14 +17,9 @@ import { HeroesService } from '../../services/heroes.service';
   styleUrl: './hero-list.component.scss',
 })
 export class HeroListComponent {
-  /**
-   * Inyecta el servicio de héroes para obtener los datos desde la API.
-   */
+  /**Inyecta el servicio de héroes para obtener los datos desde la API.*/
   private readonly _heroesService = inject(HeroesService);
 
-  /**
-   * Signal que almacena la lista de héroes obtenida del servicio.
-   * Convierte el Observable a Signal usando toSignal.
-   */
+  /**Signal que almacena la lista de héroes obtenida del servicio. Convierte el Observable a Signal usando toSignal.*/
   public allHeroes = toSignal(this._heroesService.getHeroes());
 }
