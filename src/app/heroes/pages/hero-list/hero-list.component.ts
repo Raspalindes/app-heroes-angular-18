@@ -7,12 +7,13 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 
+import { HeroImagePipe } from '../../pipes/hero-image.pipe';
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({
   selector: 'app-hero-list',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, HeroImagePipe],
   templateUrl: './hero-list.component.html',
   styleUrl: './hero-list.component.scss',
 })
@@ -22,11 +23,6 @@ export class HeroListComponent {
 
   /**Signal que almacena la lista de héroes obtenida del servicio. Convierte el Observable a Signal usando toSignal.*/
   public allHeroes = toSignal(this._heroesService.getHeroes());
-
-  /**Obtiene la ruta completa de la imagen del héroe.*/
-  public getHeroImage(imageName: string | undefined): string {
-    return imageName ? `assets/heroes/${imageName}.jpg` : 'assets/no-image.png';
-  }
 
   /**Edita un héroe (método a implementar).*/
   public editHero(id: string): void {

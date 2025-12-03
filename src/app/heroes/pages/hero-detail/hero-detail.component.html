@@ -10,7 +10,7 @@
       <div class="hero-detail__card">
         <!-- Imagen del héroe -->
         <img
-          [src]="getHeroImage(heroData.img)"
+          [src]="heroData | heroImage"
           [alt]="heroData.superhero"
           class="hero-detail__image" />
 

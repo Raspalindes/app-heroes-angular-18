@@ -14,7 +14,7 @@
               class="hero-list__card-link">
               <!-- Imagen del héroe -->
               <img
-                [src]="getHeroImage(hero.img)"
+                [src]="hero | heroImage"
                 [alt]="hero.superhero"
                 class="hero-list__card-image" />
 

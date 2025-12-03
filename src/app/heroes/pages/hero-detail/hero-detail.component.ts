@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
 import { filter, switchMap } from 'rxjs';
 
 import { Hero } from '../../interfaces/hero.interface';
+import { HeroImagePipe } from '../../pipes/hero-image.pipe';
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({
   selector: 'app-hero-detail',
   standalone: true,
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, HeroImagePipe],
   templateUrl: './hero-detail.component.html',
   styleUrl: './hero-detail.component.scss',
 })
@@ -40,10 +41,5 @@ export class HeroDetailComponent {
   /**Navega de vuelta a la lista de héroes.*/
   public goBack(): void {
     this._router.navigate(['/heroes/list']);
-  }
-
-  /**Obtiene la ruta completa de la imagen del héroe.*/
-  public getHeroImage(imageName: string | undefined): string {
-    return imageName ? `assets/heroes/${imageName}.jpg` : 'assets/no-image.png';
   }
 }
