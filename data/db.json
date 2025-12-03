@@ -1,13 +1,13 @@
 {
   "heroes": [
     {
-      "id": "batman",
-      "img": "dc-batman",
       "superhero": "Batman",
       "publisher": "DC Comics",
       "alter_ego": "Bruce Wayne",
       "first_appearance": "Detective Comics #27",
-      "alt_img": null
+      "img": "dc-batman",
+      "alt_img": null,
+      "id": "batman"
     },
     {
       "id": "superman",
@@ -179,6 +179,24 @@
       "alter_ego": "Norrin Radd",
       "first_appearance": "The Fantastic Four #48",
       "alt_img": null
+    },
+    {
+      "superhero": "pablo",
+      "publisher": "pablo",
+      "alter_ego": "pablo",
+      "first_appearance": "pablo",
+      "img": null,
+      "alt_img": null,
+      "id": "a9WF3U5"
+    },
+    {
+      "superhero": "dfgdfg",
+      "publisher": "dfgdfg",
+      "alter_ego": "dfgdfg",
+      "first_appearance": "dfgdfg",
+      "img": null,
+      "alt_img": null,
+      "id": "Krgzcr-"
     }
   ]
 }

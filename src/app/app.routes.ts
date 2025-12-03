@@ -21,6 +21,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'heroes/form/:id',
+    loadComponent: () =>
+      import('./heroes/pages/hero-form/hero-form.component').then(
+        c => c.HeroFormComponent
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'heroes/list',
   },

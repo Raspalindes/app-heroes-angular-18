@@ -35,4 +35,15 @@ export class HeroesService {
   public getHeroById(id: string): Observable<Hero> {
     return this._http.get<Hero>(`${this._apiUrl}/${id}`);
   }
+
+  public createHero(hero: Omit<Hero, 'id'>): Observable<Hero> {
+    return this._http.post<Hero>(this._apiUrl, hero);
+  }
+
+  public updateHero(updatedHero: Hero): Observable<Hero> {
+    return this._http.put<Hero>(
+      `${this._apiUrl}/${updatedHero.id}`,
+      updatedHero
+    );
+  }
 }

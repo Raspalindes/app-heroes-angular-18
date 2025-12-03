@@ -4,6 +4,18 @@
     <div class="hero-list__container">
       <h1 class="hero-list__title">Lista de Héroes</h1>
 
+      <!-- Barra de búsqueda y botón de añadir -->
+      <div class="hero-list__toolbar">
+        <input
+          type="text"
+          class="hero-list__search"
+          placeholder="Buscar héroe..."
+          #searchInput />
+        <button class="hero-list__btn--add" (click)="addHero()">
+          + Añadir Héroe
+        </button>
+      </div>
+
       <div class="hero-list__flex">
         <!-- Itera sobre cada héroe y muestra su información -->
         @for (hero of heroes; track hero.id) {
@@ -20,21 +32,6 @@
 
               <!-- Nombre del héroe -->
               <h2 class="hero-list__card-name">{{ hero.superhero }}</h2>
-
-              <!-- Editorial -->
-              <p class="hero-list__card-publisher">{{ hero.publisher }}</p>
-
-              <!-- Alter ego si existe -->
-              @if (hero.alter_ego) {
-                <p class="hero-list__card-alter-ego">{{ hero.alter_ego }}</p>
-              }
-
-              <!-- Primera aparición si existe -->
-              @if (hero.first_appearance) {
-                <p class="hero-list__card-first-appearance">
-                  {{ hero.first_appearance }}
-                </p>
-              }
             </a>
 
             <!-- Botones de acción -->
