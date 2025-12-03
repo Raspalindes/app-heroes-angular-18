@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, switchMap, tap } from 'rxjs';
 
+import { HeroRoutes } from '../../enums/hero-routes.enum';
 import { Hero } from '../../interfaces/hero.interface';
 import { HeroImagePipe } from '../../pipes/hero-image.pipe';
 import { HeroesService } from '../../services/heroes.service';
@@ -48,19 +49,19 @@ export class HeroFormComponent {
   constructor() {
     toObservable(this.heroId)
       .pipe(
-        // Maneja el caso 'new' como efecto secundario
+        /** Maneja el caso 'new' como efecto secundario */
         tap(id => {
           if (id === NEW_ID) {
             this.hero.set(null);
             this.heroForm.reset();
           }
         }),
-        // Solo deja pasar IDs que NO son 'new'
+        /** Solo deja pasar IDs que NO son 'new' */
         filter(id => id !== NEW_ID),
-        // Por cada ID válido, obtiene el héroe
-        // switchMap cancela peticiones anteriores automáticamente
+        /** Por cada ID válido, obtiene el héroe */
+        /** switchMap cancela peticiones anteriores automáticamente */
         switchMap(id => this._heroesService.getHeroById(id)),
-        // Se desuscribe automáticamente cuando el componente se destruye
+        /** Se desuscribe automáticamente cuando el componente se destruye */
         takeUntilDestroyed()
       )
       .subscribe({
@@ -73,9 +74,12 @@ export class HeroFormComponent {
       });
   }
 
-  /**
-   * Guarda el héroe: si es edición, actualiza; si es nuevo, crea.
-   */
+  /** Navega de vuelta al listado de héroes. */
+  public goBack(): void {
+    this._router.navigate([HeroRoutes.LIST]);
+  }
+
+  /** Guarda el héroe: si es edición, actualiza; si es nuevo, crea. */
   public onSave(): void {
     if (!this.heroForm.valid) {
       this.heroForm.markAllAsTouched();
@@ -110,12 +114,5 @@ export class HeroFormComponent {
     this._heroesService.updateHero(updatedHero).subscribe({
       next: () => this.goBack(),
     });
-  }
-
-  /**
-   * Navega de vuelta al listado de héroes.
-   */
-  public goBack(): void {
-    this._router.navigate(['/heroes/list']);
   }
 }
