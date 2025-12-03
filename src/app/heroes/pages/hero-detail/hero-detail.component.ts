@@ -41,4 +41,9 @@ export class HeroDetailComponent {
   public goBack(): void {
     this._router.navigate(['/heroes/list']);
   }
+
+  /**Obtiene la ruta completa de la imagen del héroe.*/
+  public getHeroImage(imageName: string | undefined): string {
+    return imageName ? `assets/heroes/${imageName}.jpg` : 'assets/no-image.png';
+  }
 }

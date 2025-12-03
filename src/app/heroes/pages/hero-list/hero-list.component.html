@@ -8,12 +8,48 @@
         <!-- Itera sobre cada héroe y muestra su información -->
         @for (hero of heroes; track hero.id) {
           <div class="hero-list__card">
+            <!-- Enlace que envuelve toda la tarjeta -->
             <a
               [routerLink]="['/heroes/detail', hero.id]"
               class="hero-list__card-link">
+              <!-- Imagen del héroe -->
+              <img
+                [src]="getHeroImage(hero.img)"
+                [alt]="hero.superhero"
+                class="hero-list__card-image" />
+
+              <!-- Nombre del héroe -->
               <h2 class="hero-list__card-name">{{ hero.superhero }}</h2>
+
+              <!-- Editorial -->
+              <p class="hero-list__card-publisher">{{ hero.publisher }}</p>
+
+              <!-- Alter ego si existe -->
+              @if (hero.alter_ego) {
+                <p class="hero-list__card-alter-ego">{{ hero.alter_ego }}</p>
+              }
+
+              <!-- Primera aparición si existe -->
+              @if (hero.first_appearance) {
+                <p class="hero-list__card-first-appearance">
+                  {{ hero.first_appearance }}
+                </p>
+              }
             </a>
-            <p class="hero-list__card-publisher">{{ hero.publisher }}</p>
+
+            <!-- Botones de acción -->
+            <div class="hero-list__card-actions">
+              <button
+                class="hero-list__btn hero-list__btn--edit"
+                (click)="editHero(hero.id)">
+                Editar
+              </button>
+              <button
+                class="hero-list__btn hero-list__btn--delete"
+                (click)="deleteHero(hero.id)">
+                Eliminar
+              </button>
+            </div>
           </div>
         } @empty {
           <div class="hero-list__error">

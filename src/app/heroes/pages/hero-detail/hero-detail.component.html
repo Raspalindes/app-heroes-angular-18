@@ -9,13 +9,10 @@
       <!-- Tarjeta principal del héroe -->
       <div class="hero-detail__card">
         <!-- Imagen del héroe -->
-        <div class="hero-detail__image-wrapper">
-          <!-- TODO pasar a un metodo el path de la imagen -->
-          <img
-            [src]="'assets/heroes/' + heroData.img + '.jpg'"
-            [alt]="heroData.superhero"
-            class="hero-detail__image" />
-        </div>
+        <img
+          [src]="getHeroImage(heroData.img)"
+          [alt]="heroData.superhero"
+          class="hero-detail__image" />
 
         <!-- Contenido textual del héroe -->
         <div class="hero-detail__content">

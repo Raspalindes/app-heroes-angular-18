@@ -1,16 +1,16 @@
 .hero-list {
-  /* Estilos generales del contenedor principal */
+  /*Estilos generales del contenedor principal*/
   min-height: 100vh;
   background-color: #0f172a;
   padding: 2rem;
 
-  /* Contenedor de la lista de héroes */
+  /*Contenedor de la lista de héroes*/
   &__container {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  /* Título principal */
+  /*Título principal*/
   &__title {
     text-align: center;
     font-size: 2.5rem;
@@ -19,7 +19,7 @@
     font-weight: bold;
   }
 
-  /* Contenedor de tarjetas de héroes */
+  /*Contenedor de tarjetas de héroes*/
   &__flex {
     display: flex;
     flex-wrap: wrap;
@@ -27,57 +27,104 @@
     justify-content: center;
   }
 
-  /* Tarjeta individual de héroe */
+  /*Tarjeta individual de héroe*/
   &__card {
     background-color: #1e293b;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
-    flex: 1 1 280px;
-    max-width: 350px;
+    width: 300px;
+    transition: background-color 0.3s ease;
 
-    /* Efecto hover en la tarjeta */
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+      background-color: #334155;
     }
   }
 
-  /* Enlace del héroe */
+  /*Enlace de la tarjeta*/
   &__card-link {
     text-decoration: none;
     display: block;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 0.8;
-    }
+    color: inherit;
   }
 
-  /* Nombre del héroe en la tarjeta */
+  /*Imagen del héroe*/
+  &__card-image {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  /*Nombre del héroe en la tarjeta*/
   &__card-name {
     font-size: 1.5rem;
     font-weight: bold;
     color: #60a5fa;
     margin-bottom: 0.5rem;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: #3b82f6;
-    }
   }
 
-  /* Editorial del héroe */
+  /*Editorial del héroe*/
   &__card-publisher {
     font-size: 1rem;
     color: #94a3b8;
-    font-style: italic;
+    margin-bottom: 0.5rem;
   }
 
-  /* Contenedor de mensaje de error */
+  /*Alter ego del héroe*/
+  &__card-alter-ego {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+
+  /*Primera aparición del héroe*/
+  &__card-first-appearance {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+  }
+
+  /*Contenedor de botones de acción*/
+  &__card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  /*Estilos base de botones*/
+  &__btn {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /*Botón de editar*/
+  &__btn--edit {
+    background-color: #22c55e;
+
+    &:hover {
+      background-color: #16a34a;
+    }
+  }
+
+  /*Botón de eliminar*/
+  &__btn--delete {
+    background-color: #ef4444;
+
+    &:hover {
+      background-color: #dc2626;
+    }
+  }
+
+  /*Contenedor de mensaje de error*/
   &__error {
     display: flex;
     justify-content: center;
@@ -87,7 +134,7 @@
     padding: 2rem;
   }
 
-  /* Mensaje de error */
+  /*Mensaje de error*/
   &__error-message {
     font-size: 1.2rem;
     color: #fca5a5;
