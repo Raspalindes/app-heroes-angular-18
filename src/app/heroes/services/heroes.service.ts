@@ -18,9 +18,7 @@ export class HeroesService {
    */
   private readonly _http = inject(HttpClient);
 
-  /**
-   * URL base de la API de héroes.
-   */
+  /**URL base de la API de héroes.*/
   private readonly _apiUrl: string = environment.apiUrl;
 
   /**
