@@ -1,0 +1,95 @@
+.hero-list {
+  /* Estilos generales del contenedor principal */
+  min-height: 100vh;
+  background-color: #0f172a;
+  padding: 2rem;
+
+  /* Contenedor de la lista de héroes */
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Título principal */
+  &__title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 3rem;
+    font-weight: bold;
+  }
+
+  /* Contenedor de tarjetas de héroes */
+  &__flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  /* Tarjeta individual de héroe */
+  &__card {
+    background-color: #1e293b;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    flex: 1 1 280px;
+    max-width: 350px;
+
+    /* Efecto hover en la tarjeta */
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  /* Enlace del héroe */
+  &__card-link {
+    text-decoration: none;
+    display: block;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  /* Nombre del héroe en la tarjeta */
+  &__card-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #60a5fa;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #3b82f6;
+    }
+  }
+
+  /* Editorial del héroe */
+  &__card-publisher {
+    font-size: 1rem;
+    color: #94a3b8;
+    font-style: italic;
+  }
+
+  /* Contenedor de mensaje de error */
+  &__error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  /* Mensaje de error */
+  &__error-message {
+    font-size: 1.2rem;
+    color: #fca5a5;
+  }
+}

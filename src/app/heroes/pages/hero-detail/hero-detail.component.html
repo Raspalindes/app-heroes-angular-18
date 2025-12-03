@@ -1,0 +1,70 @@
+<div class="hero-detail">
+  <!-- Si existe el héroe, muestra su información -->
+  @if ($hero(); as heroData) {
+    <div class="hero-detail__container">
+      <button class="hero-detail__back-btn" (click)="goBack()">
+        ← Volver a la lista
+      </button>
+
+      <!-- Tarjeta principal del héroe -->
+      <div class="hero-detail__card">
+        <!-- Imagen del héroe -->
+        <div class="hero-detail__image-wrapper">
+          <img
+            [src]="'assets/heroes/' + heroData.img + '.jpg'"
+            [alt]="heroData.superhero"
+            class="hero-detail__image" />
+        </div>
+
+        <!-- Contenido textual del héroe -->
+        <div class="hero-detail__content">
+          <!-- Nombre del héroe -->
+          <h1 class="hero-detail__title">
+            {{ heroData.superhero | titlecase }}
+          </h1>
+
+          <!-- Alter ego si existe -->
+          @if (heroData.alter_ego) {
+            <p class="hero-detail__subtitle">
+              {{ heroData.alter_ego | titlecase }}
+            </p>
+          }
+
+          <!-- Información adicional del héroe -->
+          <div class="hero-detail__info">
+            <!-- Editorial si existe -->
+            @if (heroData.publisher) {
+              <div class="hero-detail__info-item">
+                <span class="hero-detail__info-label">Editorial:</span>
+                <span class="hero-detail__info-value">{{
+                  heroData.publisher
+                }}</span>
+              </div>
+            }
+
+            <!-- Primera aparición si existe -->
+            @if (heroData.first_appearance) {
+              <div class="hero-detail__info-item">
+                <span class="hero-detail__info-label">Primera aparición:</span>
+                <span class="hero-detail__info-value">{{
+                  heroData.first_appearance | titlecase
+                }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  <!-- Si no existe el héroe, muestra mensaje de error y botón para volver -->
+  @else {
+    <div class="hero-detail__error">
+      <p class="hero-detail__error-message">
+        No se pudo cargar la información del héroe.
+      </p>
+      <button class="hero-detail__back-btn" (click)="goBack()">
+        Volver a la lista
+      </button>
+    </div>
+  }
+</div>

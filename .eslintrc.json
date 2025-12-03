@@ -1,0 +1,200 @@
+{
+  // Marca este archivo como la raíz de configuración de ESLint
+  "root": true,
+  // Especifica el parser para TypeScript
+  "parser": "@typescript-eslint/parser",
+  // Define los plugins que se utilizarán
+  "plugins": [
+    // Plugin para manejar importaciones
+    "import",
+    // Plugin para reglas específicas de TypeScript
+    "@typescript-eslint",
+    // Plugin para detectar importaciones no utilizadas
+    "unused-imports",
+    // Plugin para integración con Prettier
+    "prettier"
+  ],
+  // Configuración para diferentes tipos de archivos
+  "overrides": [
+    {
+      // Configuración para archivos TypeScript
+      "files": ["*.ts"],
+      "parserOptions": {
+        // Referencia al archivo de configuración de TypeScript
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      // Conjuntos de reglas predefinidas a extender
+      "extends": [
+        // Reglas recomendadas para Angular
+        "plugin:@angular-eslint/recommended",
+        // Reglas para procesar templates en línea
+        "plugin:@angular-eslint/template/process-inline-templates",
+        // Configuración para evitar conflictos con Prettier
+        "prettier"
+      ],
+      "rules": {
+        // Aplica las reglas de formato de Prettier
+        "prettier/prettier": "error",
+
+        // Detecta y elimina importaciones no utilizadas
+        "unused-imports/no-unused-imports": "error",
+
+        // Reglas específicas para selectores de directivas en Angular
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+
+        // Reglas específicas para selectores de componentes en Angular
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+
+        // Permite métodos de ciclo de vida vacíos en Angular
+        "@angular-eslint/no-empty-lifecycle-method": ["off"],
+
+        // Permite funciones vacías
+        "no-empty-function": "off",
+
+        // Obliga a usar funciones flecha sin cuerpo de bloque cuando es posible
+        "arrow-body-style": ["error", "as-needed"],
+
+        // Obliga a usar llaves en todas las estructuras de control
+        "curly": ["error"],
+
+        // Prohíbe importaciones específicas
+        "no-restricted-imports": ["error", "rxjs/Rx"],
+
+        // Evita dependencias innecesarias
+        "import/no-extraneous-dependencies": ["error"],
+
+        // Controla el uso de console, permitiendo solo console.error
+        "no-console": [
+          "warn",
+          {
+            "allow": ["error"]
+          }
+        ],
+
+        // Evita que los casos de switch se ejecuten en cascada
+        "no-fallthrough": ["error"],
+
+        // Define el orden de los miembros de una clase
+        "@typescript-eslint/member-ordering": [
+          "error",
+          {
+            "default": [
+              "static-field",
+              "instance-field",
+              "static-method",
+              "instance-method"
+            ]
+          }
+        ],
+
+        // Permite tipos inferibles explícitos
+        "@typescript-eslint/no-inferrable-types": "off",
+
+        // Prohíbe el uso de require
+        "@typescript-eslint/no-var-requires": "error",
+
+        // Obliga a especificar el tipo de retorno en funciones
+        "@typescript-eslint/explicit-function-return-type": "error",
+
+        // Reglas de nomenclatura para diferentes elementos
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            // Reglas para enums
+            "selector": "enum",
+            "format": ["PascalCase", "UPPER_CASE"]
+          },
+          {
+            // Reglas para miembros de enums
+            "selector": "enumMember",
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            // Regla por defecto para todos los identificadores
+            "selector": "default",
+            "format": ["camelCase"]
+          },
+          {
+            // Reglas para variables constantes
+            "selector": "variable",
+            "modifiers": ["const"],
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            // Reglas para parámetros de funciones
+            "selector": "parameter",
+            "format": ["camelCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            // Reglas para miembros privados
+            "selector": "memberLike",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            // Reglas para tipos (interfaces, tipos, clases)
+            "selector": "typeLike",
+            "format": ["PascalCase"]
+          },
+          {
+            // Reglas para variables booleanas
+            "selector": "variable",
+            "types": ["boolean"],
+            "format": ["PascalCase"],
+            "prefix": ["is", "should", "has", "can", "did", "will"]
+          },
+          {
+            // Reglas para propiedades booleanas privadas
+            "selector": "property",
+            "modifiers": ["private"],
+            "types": ["boolean"],
+            "format": ["PascalCase"],
+            "leadingUnderscore": "require",
+            "prefix": ["is", "should", "has", "can", "did", "will"]
+          },
+          {
+            // Reglas para propiedades privadas
+            "selector": "property",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            // Reglas para propiedades públicas
+            "selector": "property",
+            "format": ["camelCase", "snake_case"],
+            "leadingUnderscore": "allow"
+          }
+        ]
+      }
+    },
+    {
+      // Configuración para archivos HTML
+      "files": ["*.html"],
+      "extends": [
+        // Reglas recomendadas para templates de Angular
+        "plugin:@angular-eslint/template/recommended",
+        // Configuración para evitar conflictos con Prettier
+        "prettier"
+      ],
+      "rules": {}
+    }
+  ]
+};
