@@ -12,13 +12,13 @@ import { Hero } from '../interfaces/hero.interface';
 export class HeroImagePipe implements PipeTransform {
   /**
    * Transforma un objeto Hero en la URL de su imagen.
-   * Retorna una imagen por defecto 'no-image.png' si no se proporciona imagen o alt_img.
-   * @param hero El objeto Hero.
+   * Retorna una imagen por defecto 'no-image.svg' si no se proporciona imagen o alt_img.
+   * @param hero El objeto Hero o null.
    * @returns La URL de la imagen del héroe.
    */
-  transform(hero: Hero): string {
-    if (!hero.img && !hero.alt_img) {
-      return 'assets/no-image.png';
+  transform(hero: Hero | null): string {
+    if (!hero || (!hero.img && !hero.alt_img)) {
+      return 'assets/no-image/no-image.svg';
     }
     return hero.alt_img || `assets/heroes/${hero.img}.jpg`;
   }

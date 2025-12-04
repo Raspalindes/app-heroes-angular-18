@@ -1,0 +1,133 @@
+<div class="hero-form">
+  <div class="hero-form__container">
+    <!-- Botón para volver -->
+    <button class="hero-form__back-btn" (click)="goBack()">
+      ← Volver a la lista
+    </button>
+
+    <!-- Título del formulario -->
+    <h1 class="hero-form__title">
+      {{ heroId() === newId ? 'Crear Héroe' : 'Editar Héroe' }}
+    </h1>
+
+    <!-- Tarjeta del formulario -->
+    <div class="hero-form__card">
+      <!-- Imagen del héroe -->
+      <div class="hero-form__image-wrapper">
+        @if ($hero(); as heroData) {
+          <img
+            [src]="heroData | heroImage"
+            [alt]="heroData.superhero"
+            class="hero-form__image" />
+        }
+      </div>
+
+      <!-- Formulario -->
+      <form
+        [formGroup]="heroForm"
+        (ngSubmit)="onSave()"
+        class="hero-form__form">
+        <!-- Campo: Superhero -->
+        <div class="hero-form__field">
+          <label for="superhero" class="hero-form__label"
+            >Nombre del Héroe*</label
+          >
+          <input
+            type="text"
+            id="superhero"
+            formControlName="superhero"
+            class="hero-form__input"
+            placeholder="Ej: Superman" />
+          @if (hasFieldError('superhero')) {
+            <span class="hero-form__error"
+              >El nombre del héroe es requerido (mínimo 3 caracteres)</span
+            >
+          }
+        </div>
+
+        <!-- Campo: Publisher -->
+        <div class="hero-form__field">
+          <label for="publisher" class="hero-form__label">Editorial*</label>
+          <input
+            type="text"
+            id="publisher"
+            formControlName="publisher"
+            class="hero-form__input"
+            placeholder="Ej: DC Comics" />
+          @if (hasFieldError('publisher')) {
+            <span class="hero-form__error">La editorial es requerida</span>
+          }
+        </div>
+
+        <!-- Campo: Alter Ego -->
+        <div class="hero-form__field">
+          <label for="alter_ego" class="hero-form__label">Alter Ego*</label>
+          <input
+            type="text"
+            id="alter_ego"
+            formControlName="alter_ego"
+            class="hero-form__input"
+            placeholder="Ej: Clark Kent" />
+          @if (hasFieldError('alter_ego')) {
+            <span class="hero-form__error">El alter ego es requerido</span>
+          }
+        </div>
+
+        <!-- Campo: First Appearance -->
+        <div class="hero-form__field">
+          <label for="first_appearance" class="hero-form__label"
+            >Primera Aparición*</label
+          >
+          <input
+            type="text"
+            id="first_appearance"
+            formControlName="first_appearance"
+            class="hero-form__input"
+            placeholder="Ej: Action Comics #1" />
+          @if (hasFieldError('first_appearance')) {
+            <span class="hero-form__error"
+              >La primera aparición es requerida</span
+            >
+          }
+        </div>
+
+        <!-- Campo: Image -->
+        <div class="hero-form__field">
+          <label for="img" class="hero-form__label">Imagen</label>
+          <input
+            type="text"
+            id="img"
+            formControlName="img"
+            class="hero-form__input"
+            placeholder="Nombre de la imagen" />
+        </div>
+
+        <!-- Campo: Alt Image -->
+        <div class="hero-form__field">
+          <label for="alt_img" class="hero-form__label"
+            >Imagen Alternativa</label
+          >
+          <input
+            type="text"
+            id="alt_img"
+            formControlName="alt_img"
+            class="hero-form__input"
+            placeholder="URL de imagen alternativa" />
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="hero-form__actions">
+          <button type="submit" class="hero-form__btn hero-form__btn--save">
+            {{ heroId() === newId ? 'Crear' : 'Guardar' }}
+          </button>
+          <button
+            type="button"
+            class="hero-form__btn hero-form__btn--cancel"
+            (click)="goBack()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

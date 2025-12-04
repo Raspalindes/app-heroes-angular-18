@@ -1,22 +1,22 @@
 {
   "heroes": [
     {
-      "id": "batman",
-      "img": "dc-batman",
       "superhero": "Batman",
       "publisher": "DC Comics",
       "alter_ego": "Bruce Wayne",
       "first_appearance": "Detective Comics #27",
-      "alt_img": null
+      "img": "dc-batman",
+      "alt_img": null,
+      "id": "batman"
     },
     {
-      "id": "superman",
-      "img": "dc-superman",
       "superhero": "Superman",
       "publisher": "DC Comics",
       "alter_ego": "Kal-El",
       "first_appearance": "Action Comics #1",
-      "alt_img": null
+      "img": "dc-superman",
+      "alt_img": null,
+      "id": "superman"
     },
     {
       "id": "flash",
@@ -163,13 +163,13 @@
       "alt_img": null
     },
     {
-      "id": "cyclops",
-      "img": "marvel-cyclops",
       "superhero": "Cyclops",
       "publisher": "Marvel Comics",
       "alter_ego": "Scott Summers",
       "first_appearance": "X-Men #1",
-      "alt_img": null
+      "img": "marvel-cyclops",
+      "alt_img": null,
+      "id": "cyclops"
     },
     {
       "id": "silver",

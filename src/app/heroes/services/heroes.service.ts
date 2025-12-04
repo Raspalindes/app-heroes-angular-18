@@ -35,4 +35,25 @@ export class HeroesService {
   public getHeroById(id: string): Observable<Hero> {
     return this._http.get<Hero>(`${this._apiUrl}/${id}`);
   }
+
+  /**
+   * Crea un nuevo héroe en la API.
+   * @param hero - Objeto héroe sin id (el backend lo genera)
+   * @returns Observable con el héroe creado
+   */
+  public addHero(hero: Omit<Hero, 'id'>): Observable<Hero> {
+    return this._http.post<Hero>(this._apiUrl, hero);
+  }
+
+  /**
+   * Actualiza un héroe existente en la API.
+   * @param updatedHero - Objeto héroe con id
+   * @returns Observable con el héroe actualizado
+   */
+  public editHero(updatedHero: Hero): Observable<Hero> {
+    return this._http.put<Hero>(
+      `${this._apiUrl}/${updatedHero.id}`,
+      updatedHero
+    );
+  }
 }
