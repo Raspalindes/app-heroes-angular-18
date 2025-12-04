@@ -1,26 +1,9 @@
-<div
-  class="confirm-dialog__overlay"
-  role="dialog"
-  aria-modal="true"
-  tabindex="-1"
-  (click)="onCancel()"
-  (keydown.escape)="onCancel()">
-  <div
-    class="confirm-dialog__modal"
-    role="document"
-    tabindex="0"
-    (click)="$event.stopPropagation()"
-    (keydown.escape)="onCancel()">
-    <p class="confirm-dialog__message">
-      ¿Está seguro que desea eliminar este héroe?
-    </p>
-    <div class="confirm-dialog__actions">
-      <button class="confirm-dialog__btn confirm-dialog__btn--cancel" (click)="onCancel()">
-        Cancelar
-      </button>
-      <button class="confirm-dialog__btn confirm-dialog__btn--confirm" (click)="onConfirm()">
-        Eliminar
-      </button>
+<div class="overlay" (click)="onCancel()" (keydown.escape)="onCancel()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <p class="message">¿Está seguro que desea eliminar este héroe?</p>
+    <div class="actions">
+      <button class="btn-cancel" (click)="onCancel()">Cancelar</button>
+      <button class="btn-confirm" (click)="onConfirm()">Eliminar</button>
     </div>
   </div>
 </div>
