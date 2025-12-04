@@ -1,8 +1,6 @@
-import { Component, inject, input, signal } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { filter, switchMap, tap } from 'rxjs';
 
 import { HeroRoutes } from '../../enums/hero-routes.enum';
 import { Hero } from '../../interfaces/hero.interface';
@@ -25,12 +23,6 @@ import { NEW_ID } from './hero-form.constants';
   styleUrl: './hero-form.component.scss',
 })
 export class HeroFormComponent {
-  /** ID del héroe recibido desde la ruta. 'new' para crear, ID para editar. */
-  public heroId = input.required<string>();
-
-  /** Signal que almacena el héroe actual cuando está en modo edición (para mostrar imagen). */
-  public hero = signal<Hero | null>(null);
-
   /** Servicio para operaciones CRUD de héroes. */
   private readonly _heroesService = inject(HeroesService);
 
@@ -40,6 +32,12 @@ export class HeroFormComponent {
   /** Router de Angular para navegación programática. */
   private readonly _router = inject(Router);
 
+  /** ID del héroe recibido desde la ruta. 'new' para crear, ID para editar. */
+  public heroId = input.required<string>();
+
+  /** Signal que almacena el héroe actual cuando está en modo edición (para mostrar imagen). */
+  public $hero = signal<Hero | null>(null);
+
   /** Formulario reactivo con los controles definidos. */
   public heroForm: FormGroup = this._fb.group(FORM_CONTROLS_CONFIG);
 
@@ -47,31 +45,33 @@ export class HeroFormComponent {
   public readonly newId = NEW_ID;
 
   constructor() {
-    toObservable(this.heroId)
-      .pipe(
-        /** Maneja el caso 'new' como efecto secundario */
-        tap(id => {
-          if (id === NEW_ID) {
-            this.hero.set(null);
-            this.heroForm.reset();
-          }
-        }),
-        /** Solo deja pasar IDs que NO son 'new' */
-        filter(id => id !== NEW_ID),
-        /** Por cada ID válido, obtiene el héroe */
-        /** switchMap cancela peticiones anteriores automáticamente */
-        switchMap(id => this._heroesService.getHeroById(id)),
-        /** Se desuscribe automáticamente cuando el componente se destruye */
-        takeUntilDestroyed()
-      )
-      .subscribe({
-        next: (heroById: Hero) => {
-          if (heroById) {
-            this.hero.set(heroById);
-            this.heroForm.patchValue(heroById);
-          }
-        },
-      });
+    effect(() => {
+      const id = this.heroId();
+      if (id && id !== NEW_ID) {
+        this._loadHeroData(id);
+      }
+    });
+  }
+
+  private _loadHeroData(id: string): void {
+    this._heroesService.getHeroById(id).subscribe({
+      next: (heroById: Hero) => {
+        if (heroById) {
+          this.heroForm.patchValue(heroById);
+          this.$hero.set(heroById);
+        }
+      },
+    });
+  }
+
+  /**
+   * Verifica si un campo del formulario tiene errores y ha sido tocado.
+   * @param fieldName - Nombre del campo a validar
+   * @returns true si el campo es inválido y ha sido tocado
+   */
+  public hasFieldError(fieldName: string): boolean {
+    const field = this.heroForm.get(fieldName);
+    return !!(field?.invalid && field?.touched);
   }
 
   /** Navega de vuelta al listado de héroes. */
@@ -81,7 +81,7 @@ export class HeroFormComponent {
 
   /** Guarda el héroe: si es edición, actualiza; si es nuevo, crea. */
   public onSave(): void {
-    if (!this.heroForm.valid) {
+    if (this.heroForm.invalid) {
       this.heroForm.markAllAsTouched();
       return;
     }
@@ -90,7 +90,7 @@ export class HeroFormComponent {
     if (id === NEW_ID) {
       this._addHero();
     } else {
-      this._editHero(id);
+      this._editHero();
     }
   }
 
@@ -99,7 +99,8 @@ export class HeroFormComponent {
    * @private
    */
   private _addHero(): void {
-    this._heroesService.createHero(this.heroForm.value).subscribe({
+    const newHero: Omit<Hero, 'id'> = this.heroForm.value;
+    this._heroesService.addHero(newHero).subscribe({
       next: () => this.goBack(),
     });
   }
@@ -109,9 +110,10 @@ export class HeroFormComponent {
    * @private
    * @param id - ID del héroe a editar
    */
-  private _editHero(id: string): void {
-    const updatedHero: Hero = { ...this.heroForm.value, id };
-    this._heroesService.updateHero(updatedHero).subscribe({
+  private _editHero(): void {
+    const actualHero = this.$hero();
+    const updatedHero: Hero = { ...actualHero, ...this.heroForm.value };
+    this._heroesService.editHero(updatedHero).subscribe({
       next: () => this.goBack(),
     });
   }

@@ -14,15 +14,11 @@
     <div class="hero-form__card">
       <!-- Imagen del héroe -->
       <div class="hero-form__image-wrapper">
-        @if (hero(); as heroData) {
+        @if ($hero(); as heroData) {
           <img
             [src]="heroData | heroImage"
             [alt]="heroData.superhero"
             class="hero-form__image" />
-        } @else {
-          <div class="hero-form__placeholder">
-            <span>Sin imagen</span>
-          </div>
         }
       </div>
 
@@ -42,10 +38,7 @@
             formControlName="superhero"
             class="hero-form__input"
             placeholder="Ej: Superman" />
-          @if (
-            heroForm.get('superhero')?.invalid &&
-            heroForm.get('superhero')?.touched
-          ) {
+          @if (hasFieldError('superhero')) {
             <span class="hero-form__error"
               >El nombre del héroe es requerido (mínimo 3 caracteres)</span
             >
@@ -61,10 +54,7 @@
             formControlName="publisher"
             class="hero-form__input"
             placeholder="Ej: DC Comics" />
-          @if (
-            heroForm.get('publisher')?.invalid &&
-            heroForm.get('publisher')?.touched
-          ) {
+          @if (hasFieldError('publisher')) {
             <span class="hero-form__error">La editorial es requerida</span>
           }
         </div>
@@ -78,10 +68,7 @@
             formControlName="alter_ego"
             class="hero-form__input"
             placeholder="Ej: Clark Kent" />
-          @if (
-            heroForm.get('alter_ego')?.invalid &&
-            heroForm.get('alter_ego')?.touched
-          ) {
+          @if (hasFieldError('alter_ego')) {
             <span class="hero-form__error">El alter ego es requerido</span>
           }
         </div>
@@ -97,10 +84,7 @@
             formControlName="first_appearance"
             class="hero-form__input"
             placeholder="Ej: Action Comics #1" />
-          @if (
-            heroForm.get('first_appearance')?.invalid &&
-            heroForm.get('first_appearance')?.touched
-          ) {
+          @if (hasFieldError('first_appearance')) {
             <span class="hero-form__error"
               >La primera aparición es requerida</span
             >
