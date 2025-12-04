@@ -3,39 +3,80 @@
  * Utiliza el servicio de héroes para obtener los datos y los gestiona con signals.
  * Renderiza la lista usando la nueva sintaxis de control de flujo de Angular.
  */
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { HeroRoutes } from '../../enums/hero-routes.enum';
+import { Hero } from '../../interfaces/hero.interface';
 import { HeroImagePipe } from '../../pipes/hero-image.pipe';
 import { HeroesService } from '../../services/heroes.service';
 
 @Component({
   selector: 'app-hero-list',
   standalone: true,
-  imports: [HeroImagePipe, RouterLink],
+  imports: [HeroImagePipe, RouterLink, ConfirmDialogComponent],
   templateUrl: './hero-list.component.html',
   styleUrl: './hero-list.component.scss',
 })
-export class HeroListComponent {
+export class HeroListComponent implements OnInit {
   /** Inyecta el servicio de héroes para obtener los datos desde la API. */
   private readonly _heroesService = inject(HeroesService);
 
   /** Inyecta el servicio de navegación de Angular para cambiar de ruta. */
   private readonly _router = inject(Router);
 
-  /** Signal que almacena la lista de héroes obtenida del servicio. Convierte el Observable a Signal usando toSignal.*/
-  public allHeroes = toSignal(this._heroesService.getHeroes());
+  /** Signal que almacena la lista de héroes. */
+  public allHeroes = signal<Hero[]>([]);
 
-  /** Edita un héroe (método a implementar). */
+  /** Signal para mostrar/ocultar el diálogo de confirmación. */
+  public showConfirmDialog = signal<boolean>(false);
+
+  /** ID del héroe pendiente de eliminar. */
+  private _heroToDeleteId: string | null = null;
+
+  /** Carga inicial de héroes. */
+  public ngOnInit(): void {
+    this._loadHeroes();
+  }
+
+  /** Carga la lista de héroes desde el servicio. */
+  private _loadHeroes(): void {
+    this._heroesService.getHeroes().subscribe(heroes => {
+      this.allHeroes.set(heroes);
+    });
+  }
+
+  /** Edita un héroe. */
   public editHero(id: string): void {
     this._router.navigate([HeroRoutes.FORM, id]);
   }
 
-  /** Elimina un héroe (método a implementar). */
+  /** Abre el diálogo de confirmación para eliminar un héroe. */
   public deleteHero(id: string): void {
-    // TODO: Implementar lógica de eliminación
+    this._heroToDeleteId = id;
+    this.showConfirmDialog.set(true);
+  }
+
+  /** Confirma la eliminación del héroe. */
+  public confirmDelete(): void {
+    if (this._heroToDeleteId) {
+      this._heroesService.deleteHeroById(this._heroToDeleteId).subscribe(() => {
+        this._loadHeroes();
+        this._closeDialog();
+      });
+    }
+  }
+
+  /** Cancela la eliminación y cierra el diálogo. */
+  public cancelDelete(): void {
+    this._closeDialog();
+  }
+
+  /** Cierra el diálogo y limpia el estado. */
+  private _closeDialog(): void {
+    this.showConfirmDialog.set(false);
+    this._heroToDeleteId = null;
   }
 
   /** Navega al formulario para crear un nuevo héroe. */

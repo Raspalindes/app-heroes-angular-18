@@ -56,4 +56,11 @@
       </div>
     </div>
   }
+
+  <!-- Diálogo de confirmación -->
+  @if (showConfirmDialog()) {
+    <app-confirm-dialog
+      (confirmed)="confirmDelete()"
+      (cancelled)="cancelDelete()" />
+  }
 </div>
