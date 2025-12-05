@@ -1,6 +1,10 @@
 <div class="overlay" (click)="onCancel()" (keydown.escape)="onCancel()">
   <div class="modal" (click)="$event.stopPropagation()">
-    <p class="message">¿Está seguro que desea eliminar este héroe?</p>
+    <p class="message">
+      ¿Está seguro que desea eliminar al héroe
+      <strong>{{ hero().superhero }}</strong
+      >?
+    </p>
     <div class="actions">
       <button class="btn-cancel" (click)="onCancel()">Cancelar</button>
       <button class="btn-confirm" (click)="onConfirm()">Eliminar</button>

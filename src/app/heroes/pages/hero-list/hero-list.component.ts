@@ -29,11 +29,10 @@ export class HeroListComponent implements OnInit {
   /** Signal que almacena la lista de héroes. */
   public allHeroes = signal<Hero[]>([]);
 
+  public heroToDelete: Hero | null = null;
+
   /** Signal para mostrar/ocultar el diálogo de confirmación. */
   public showConfirmDialog = signal<boolean>(false);
-
-  /** ID del héroe pendiente de eliminar. */
-  private _heroToDeleteId: string | null = null;
 
   /** Carga inicial de héroes. */
   public ngOnInit(): void {
@@ -45,20 +44,18 @@ export class HeroListComponent implements OnInit {
     this._router.navigate([HeroRoutes.FORM, id]);
   }
 
-  /** Abre el diálogo de confirmación para eliminar un héroe. */
-  public deleteHero(id: string): void {
-    this._heroToDeleteId = id;
+  /** Abre el diálogo con el héroe seleccionado */
+  public deleteHero(hero: Hero): void {
+    this.heroToDelete = hero;
     this.showConfirmDialog.set(true);
   }
 
-  /** Confirma la eliminación del héroe. */
-  public confirmDelete(): void {
-    if (this._heroToDeleteId) {
-      this._heroesService.deleteHeroById(this._heroToDeleteId).subscribe(() => {
-        this._loadHeroes();
-        this._closeDialog();
-      });
-    }
+  /** Recibe el id desde el output y lo borra */
+  public confirmDelete(id: string): void {
+    this._heroesService.deleteHeroById(id).subscribe(() => {
+      this._loadHeroes();
+      this._closeDialog();
+    });
   }
 
   /** Cancela la eliminación y cierra el diálogo. */
@@ -81,6 +78,6 @@ export class HeroListComponent implements OnInit {
   /** Cierra el diálogo y limpia el estado. */
   private _closeDialog(): void {
     this.showConfirmDialog.set(false);
-    this._heroToDeleteId = null;
+    this.heroToDelete = null;
   }
 }

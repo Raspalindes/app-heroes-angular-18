@@ -1,4 +1,6 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+
+import { Hero } from '../../../heroes/interfaces/hero.interface';
 
 @Component({
   selector: 'app-confirm-dialog',
@@ -7,18 +9,21 @@ import { Component, output } from '@angular/core';
   styleUrl: './confirm-dialog.component.scss',
 })
 export class ConfirmDialogComponent {
-  /** Evento emitido al confirmar */
-  public confirmed = output<void>();
+  /** Recibe el héroe completo como input */
+  public hero = input.required<Hero>();
 
-  /** Evento emitido al cancelar */
+  /** Emite el id del héroe al confirmar */
+  public confirmed = output<string>();
+
+  /** Emite un evento vacío al cancelar */
   public cancelled = output<void>();
 
-  /** Ejecuta la acción de confirmar y emite el evento */
+  /** emite el id */
   public onConfirm(): void {
-    this.confirmed.emit();
+    this.confirmed.emit(this.hero().id);
   }
 
-  /** Ejecuta la acción de cancelar y emite el evento */
+  /** Cancela */
   public onCancel(): void {
     this.cancelled.emit();
   }

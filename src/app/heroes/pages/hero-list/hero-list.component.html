@@ -43,7 +43,7 @@
               </button>
               <button
                 class="hero-list__btn hero-list__btn--delete"
-                (click)="deleteHero(hero.id)">
+                (click)="deleteHero(hero)">
                 Eliminar
               </button>
             </div>
@@ -60,7 +60,8 @@
   <!-- Diálogo de confirmación -->
   @if (showConfirmDialog()) {
     <app-confirm-dialog
-      (confirmed)="confirmDelete()"
+      [hero]="heroToDelete!"
+      (confirmed)="confirmDelete($event)"
       (cancelled)="cancelDelete()" />
   }
 </div>
