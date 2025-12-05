@@ -40,13 +40,6 @@ export class HeroListComponent implements OnInit {
     this._loadHeroes();
   }
 
-  /** Carga la lista de héroes desde el servicio. */
-  private _loadHeroes(): void {
-    this._heroesService.getHeroes().subscribe(heroes => {
-      this.allHeroes.set(heroes);
-    });
-  }
-
   /** Edita un héroe. */
   public editHero(id: string): void {
     this._router.navigate([HeroRoutes.FORM, id]);
@@ -73,14 +66,21 @@ export class HeroListComponent implements OnInit {
     this._closeDialog();
   }
 
+  /** Navega al formulario para crear un nuevo héroe. */
+  public addHero(): void {
+    this._router.navigate([HeroRoutes.FORM, 'new']);
+  }
+
+  /** Carga la lista de héroes desde el servicio. */
+  private _loadHeroes(): void {
+    this._heroesService.getHeroes().subscribe(heroes => {
+      this.allHeroes.set(heroes);
+    });
+  }
+
   /** Cierra el diálogo y limpia el estado. */
   private _closeDialog(): void {
     this.showConfirmDialog.set(false);
     this._heroToDeleteId = null;
-  }
-
-  /** Navega al formulario para crear un nuevo héroe. */
-  public addHero(): void {
-    this._router.navigate([HeroRoutes.FORM, 'new']);
   }
 }
