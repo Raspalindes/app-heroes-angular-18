@@ -13,14 +13,14 @@ export class ConfirmDialogComponent {
   public hero = input.required<Hero>();
 
   /** Emite el id del héroe al confirmar */
-  public confirmed = output<string>();
+  public confirmed = output<void>();
 
   /** Emite un evento vacío al cancelar */
   public cancelled = output<void>();
 
   /** emite el id */
   public onConfirm(): void {
-    this.confirmed.emit(this.hero().id);
+    this.confirmed.emit();
   }
 
   /** Cancela */

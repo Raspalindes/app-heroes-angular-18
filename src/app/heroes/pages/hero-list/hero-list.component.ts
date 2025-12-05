@@ -27,12 +27,10 @@ export class HeroListComponent implements OnInit {
   private readonly _router = inject(Router);
 
   /** Signal que almacena la lista de héroes. */
-  public allHeroes = signal<Hero[]>([]);
+  public $allHeroes = signal<Hero[]>([]);
 
-  public heroToDelete: Hero | null = null;
-
-  /** Signal para mostrar/ocultar el diálogo de confirmación. */
-  public showConfirmDialog = signal<boolean>(false);
+  /** Héroe seleccionado para eliminar. */
+  public $heroToDelete = signal<Hero | null>(null);
 
   /** Carga inicial de héroes. */
   public ngOnInit(): void {
@@ -45,22 +43,30 @@ export class HeroListComponent implements OnInit {
   }
 
   /** Abre el diálogo con el héroe seleccionado */
-  public deleteHero(hero: Hero): void {
-    this.heroToDelete = hero;
-    this.showConfirmDialog.set(true);
+  public onDeleteHero(hero: Hero): void {
+    this.$heroToDelete.set(hero);
   }
 
   /** Recibe el id desde el output y lo borra */
-  public confirmDelete(id: string): void {
-    this._heroesService.deleteHeroById(id).subscribe(() => {
-      this._loadHeroes();
-      this._closeDialog();
+  public confirmDelete(): void {
+    const id = this.$heroToDelete()?.id;
+    if (!id) {
+      this.$heroToDelete.set(null);
+      console.error('No se proporcionó un ID de héroe válido para eliminar.');
+      return;
+    }
+
+    this._heroesService.deleteHeroById(id).subscribe({
+      next: () => {
+        this._loadHeroes();
+        this.$heroToDelete.set(null);
+      },
     });
   }
 
   /** Cancela la eliminación y cierra el diálogo. */
   public cancelDelete(): void {
-    this._closeDialog();
+    this.$heroToDelete.set(null);
   }
 
   /** Navega al formulario para crear un nuevo héroe. */
@@ -70,14 +76,10 @@ export class HeroListComponent implements OnInit {
 
   /** Carga la lista de héroes desde el servicio. */
   private _loadHeroes(): void {
-    this._heroesService.getHeroes().subscribe(heroes => {
-      this.allHeroes.set(heroes);
+    this._heroesService.getHeroes().subscribe({
+      next: heroes => {
+        this.$allHeroes.set(heroes);
+      },
     });
-  }
-
-  /** Cierra el diálogo y limpia el estado. */
-  private _closeDialog(): void {
-    this.showConfirmDialog.set(false);
-    this.heroToDelete = null;
   }
 }

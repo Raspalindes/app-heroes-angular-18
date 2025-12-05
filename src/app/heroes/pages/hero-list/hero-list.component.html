@@ -1,6 +1,6 @@
 <div class="hero-list">
   <!-- Renderiza la lista de héroes si existen -->
-  @if (allHeroes(); as heroes) {
+  @if ($allHeroes(); as heroes) {
     <div class="hero-list__container">
       <h1 class="hero-list__title">Lista de Héroes</h1>
 
@@ -43,7 +43,7 @@
               </button>
               <button
                 class="hero-list__btn hero-list__btn--delete"
-                (click)="deleteHero(hero)">
+                (click)="onDeleteHero(hero)">
                 Eliminar
               </button>
             </div>
@@ -58,10 +58,10 @@
   }
 
   <!-- Diálogo de confirmación -->
-  @if (showConfirmDialog()) {
+  @if ($heroToDelete(); as hero) {
     <app-confirm-dialog
-      [hero]="heroToDelete!"
-      (confirmed)="confirmDelete($event)"
+      [hero]="hero"
+      (confirmed)="confirmDelete()"
       (cancelled)="cancelDelete()" />
   }
 </div>
