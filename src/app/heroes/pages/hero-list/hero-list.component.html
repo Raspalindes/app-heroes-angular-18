@@ -10,7 +10,8 @@
           type="text"
           class="hero-list__search"
           placeholder="Buscar héroe..."
-          #searchInput />
+          [value]="$searchTerm()"
+          (input)="onSearchChange($any($event.target).value)" />
         <button class="hero-list__btn--add" (click)="addHero()">
           + Añadir Héroe
         </button>
@@ -18,7 +19,7 @@
 
       <div class="hero-list__flex">
         <!-- Itera sobre cada héroe y muestra su información -->
-        @for (hero of heroes; track hero.id) {
+        @for (hero of heroes | heroFilter: $searchTerm(); track hero.id) {
           <div class="hero-list__card">
             <!-- Enlace que envuelve toda la tarjeta -->
             <a
