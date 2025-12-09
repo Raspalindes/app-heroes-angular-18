@@ -3,14 +3,17 @@
  * Muestra notificaciones usando PrimeNG Toast:
  * - Notificaciones de éxito para POST, PUT y DELETE exitosos.
  * - Notificaciones de error para cualquier petición fallida.
+ * Redirige a la pantalla de error técnico en caso de errores críticos.
  */
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { catchError, tap, throwError } from 'rxjs';
 
 export const responseInterceptor: HttpInterceptorFn = (req, next) => {
   const messageService = inject(MessageService);
+  const router = inject(Router);
 
   return next(req).pipe(
     tap(event => {
@@ -37,7 +40,9 @@ export const responseInterceptor: HttpInterceptorFn = (req, next) => {
         detail: 'No se pudo completar la operación',
         life: 3000,
       });
-      //TODO enviar a la pantalla de tecnichal error con más detalles
+
+      // Redirige a la pantalla de error técnico
+      router.navigate(['/error']);
 
       // Re-lanza el error para que lo manejen los suscriptores
       return throwError(() => error);

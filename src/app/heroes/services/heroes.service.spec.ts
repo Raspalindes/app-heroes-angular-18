@@ -9,7 +9,7 @@ import { Hero } from '../interfaces/hero.interface';
 
 import { HeroesService } from './heroes.service';
 
-fdescribe('HeroesService', () => {
+describe('HeroesService', () => {
   let service: HeroesService;
   let httpMock: HttpTestingController;
 

@@ -28,6 +28,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'error',
+    loadComponent: () =>
+      import('./shared/components/technical-error/technical-error.component').then(
+        c => c.TechnicalErrorComponent
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'heroes/list',
   },
