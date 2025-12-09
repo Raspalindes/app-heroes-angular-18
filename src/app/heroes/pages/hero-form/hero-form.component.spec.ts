@@ -14,7 +14,7 @@ import { HeroesService } from '../../services/heroes.service';
 import { HeroFormComponent } from './hero-form.component';
 import { NEW_ID } from './hero-form.constants';
 
-fdescribe('HeroFormComponent', () => {
+describe('HeroFormComponent', () => {
   let component: HeroFormComponent;
   let fixture: ComponentFixture<HeroFormComponent>;
   let httpMock: HttpTestingController;
