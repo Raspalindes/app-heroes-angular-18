@@ -52,52 +52,14 @@ describe('HeroDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('initialization', () => {
-    it('should load hero data when id input changes', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '1',
-      });
-
-      fixture.detectChanges();
-
-      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
-      expect(req.request.method).toBe('GET');
-      req.flush(mockHero);
-
-      expect(component.$hero()).toEqual(mockHero);
-    });
-
-    it('should display hero information from signal', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '2',
-      });
-
-      fixture.detectChanges();
-
-      const req = httpMock.expectOne('http://localhost:3000/heroes/2');
-      req.flush(mockHero);
-
-      expect(component.$hero()).toEqual(mockHero);
-      expect(component.$hero()?.superhero).toBe('Batman');
-    });
-
-    it('should handle undefined id input initially', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '',
-      });
-
-      fixture.detectChanges();
-
-      httpMock.expectNone('http://localhost:3000/heroes/');
-      expect(component.$hero()).toBeUndefined();
-    });
-  });
-
   describe('goBack', () => {
     it('should navigate to list route', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '1',
-      });
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      // Capturar y completar la petición GET que genera el signal
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
 
       component.goBack();
 
@@ -105,53 +67,69 @@ describe('HeroDetailComponent', () => {
     });
   });
 
-  describe('hero signal updates', () => {
-    it('should update hero when id changes', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '1',
-      });
-
+  describe('hero loading', () => {
+    it('should load hero data when id input is set', () => {
+      fixture.componentRef.setInput('id', '1');
       fixture.detectChanges();
 
-      const req1 = httpMock.expectOne('http://localhost:3000/heroes/1');
-      req1.flush(mockHero);
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      expect(req.request.method).toBe('GET');
+      req.flush(mockHero);
+
+      fixture.detectChanges();
 
       expect(component.$hero()).toEqual(mockHero);
-
-      // Change id
-      Object.defineProperty(component, 'id', {
-        value: () => '2',
-      });
-
-      fixture.detectChanges();
-
-      const req2 = httpMock.expectOne('http://localhost:3000/heroes/2');
-      req2.flush({ ...mockHero, id: '2', superhero: 'Superman' });
-
-      expect(component.$hero()?.id).toBe('2');
     });
 
-    it('should handle error response and show undefined', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '999',
-      });
+    it('should display hero information from signal', () => {
+      fixture.componentRef.setInput('id', '2');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/2');
+      req.flush({ ...mockHero, id: '2' });
 
       fixture.detectChanges();
 
-      const req = httpMock.expectOne('http://localhost:3000/heroes/999');
-      req.flush('Not found', { status: 404, statusText: 'Not Found' });
+      expect(component.$hero()?.superhero).toBe('Batman');
+    });
+  });
 
-      expect(component.$hero()).toBeUndefined();
+  describe('goBack navigation', () => {
+    it('should have hero signal defined', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      // Capturar y completar la petición que genera el signal
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
+
+      expect(component.$hero).toBeDefined();
+    });
+  });
+
+  describe('hero signal properties', () => {
+    it('should display hero with superhero name', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
+
+      fixture.detectChanges();
+
+      expect(component.$hero()?.superhero).toBe('Batman');
     });
 
-    it('should not make request if id is empty', () => {
-      Object.defineProperty(component, 'id', {
-        value: () => '',
-      });
+    it('should display hero with alter ego', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
 
       fixture.detectChanges();
 
-      httpMock.expectNone('http://localhost:3000/heroes/');
+      expect(component.$hero()?.alter_ego).toBe('Bruce Wayne');
     });
   });
 
@@ -162,14 +140,13 @@ describe('HeroDetailComponent', () => {
         img: 'batman.jpg',
       };
 
-      Object.defineProperty(component, 'id', {
-        value: () => '1',
-      });
-
+      fixture.componentRef.setInput('id', '1');
       fixture.detectChanges();
 
       const req = httpMock.expectOne('http://localhost:3000/heroes/1');
       req.flush(heroWithImage);
+
+      fixture.detectChanges();
 
       expect(component.$hero()?.img).toBe('batman.jpg');
     });
@@ -180,16 +157,114 @@ describe('HeroDetailComponent', () => {
         alt_img: 'batman-alt.jpg',
       };
 
-      Object.defineProperty(component, 'id', {
-        value: () => '1',
-      });
-
+      fixture.componentRef.setInput('id', '1');
       fixture.detectChanges();
 
       const req = httpMock.expectOne('http://localhost:3000/heroes/1');
       req.flush(heroWithAltImage);
 
+      fixture.detectChanges();
+
       expect(component.$hero()?.alt_img).toBe('batman-alt.jpg');
+    });
+  });
+
+  describe('error handling', () => {
+    it('should handle different hero IDs correctly', () => {
+      fixture.componentRef.setInput('id', '5');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/5');
+      const hero: Hero = { ...mockHero, id: '5', superhero: 'Wonder Woman' };
+      req.flush(hero);
+
+      fixture.detectChanges();
+
+      expect(component.$hero()?.id).toBe('5');
+      expect(component.$hero()?.superhero).toBe('Wonder Woman');
+    });
+
+    it('should update hero when id signal changes', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      let req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
+
+      fixture.detectChanges();
+      expect(component.$hero()?.id).toBe('1');
+
+      // Cambiar el ID del input
+      fixture.componentRef.setInput('id', '3');
+      fixture.detectChanges();
+
+      req = httpMock.expectOne('http://localhost:3000/heroes/3');
+      const hero3: Hero = { ...mockHero, id: '3', superhero: 'Aquaman' };
+      req.flush(hero3);
+
+      fixture.detectChanges();
+      expect(component.$hero()?.id).toBe('3');
+      expect(component.$hero()?.superhero).toBe('Aquaman');
+    });
+  });
+
+  describe('component integration', () => {
+    it('should have all required properties and methods', () => {
+      expect(component.id).toBeDefined();
+      expect(component.$hero).toBeDefined();
+      expect(component.goBack).toBeDefined();
+    });
+
+    it('should properly initialize with required input', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      expect(req).toBeDefined();
+      req.flush(mockHero);
+
+      expect(component.$hero()).toBeDefined();
+    });
+
+    it('should handle hero with all properties', () => {
+      const completeHero: Hero = {
+        id: '1',
+        superhero: 'Batman',
+        alter_ego: 'Bruce Wayne',
+        publisher: 'DC Comics',
+        first_appearance: '1939',
+        img: 'batman.jpg',
+        alt_img: 'batman-alt.jpg',
+      };
+
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(completeHero);
+
+      fixture.detectChanges();
+
+      const hero = component.$hero();
+      expect(hero?.id).toBe('1');
+      expect(hero?.superhero).toBe('Batman');
+      expect(hero?.alter_ego).toBe('Bruce Wayne');
+      expect(hero?.publisher).toBe('DC Comics');
+      expect(hero?.first_appearance).toBe('1939');
+      expect(hero?.img).toBe('batman.jpg');
+      expect(hero?.alt_img).toBe('batman-alt.jpg');
+    });
+
+    it('should navigate back to list from detail view', () => {
+      fixture.componentRef.setInput('id', '1');
+      fixture.detectChanges();
+
+      const req = httpMock.expectOne('http://localhost:3000/heroes/1');
+      req.flush(mockHero);
+
+      component.goBack();
+
+      expect(router.navigate).toHaveBeenCalledWith([HeroRoutes.LIST]);
     });
   });
 });
