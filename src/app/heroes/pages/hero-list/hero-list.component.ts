@@ -71,11 +71,6 @@ export class HeroListComponent implements OnInit {
     });
   }
 
-  /** Cancela la eliminación y cierra el diálogo. */
-  public cancelDelete(): void {
-    this.$heroToDelete.set(null);
-  }
-
   /** Navega al formulario para crear un nuevo héroe. */
   public addHero(): void {
     this._router.navigate([HeroRoutes.FORM, 'new']);

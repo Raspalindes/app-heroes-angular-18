@@ -63,6 +63,6 @@
     <app-confirm-dialog
       [hero]="hero"
       (confirmed)="confirmDelete()"
-      (cancelled)="cancelDelete()" />
+      (cancelled)="$heroToDelete.set(null)" />
   }
 </div>

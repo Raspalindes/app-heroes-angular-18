@@ -13,6 +13,18 @@ describe('ConfirmDialogComponent', () => {
 
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
+    // Provide required input before change detection
+    Object.defineProperty(component, 'hero', {
+      value: () => ({
+        id: 'test-id',
+        superhero: 'Test Hero',
+        publisher: 'Test Publisher',
+        alter_ego: 'Test Alter Ego',
+        first_appearance: 'Test Appearance',
+        img: '',
+        alt_img: '',
+      }),
+    });
     fixture.detectChanges();
   });
 
