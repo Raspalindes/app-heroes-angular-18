@@ -27,19 +27,19 @@ describe('responseInterceptor', () => {
   });
 
   describe('successful POST requests', () => {
-    it('should show success message for POST request', (done) => {
+    it('should show success message for POST request', done => {
       const req = new HttpRequest('POST', '/api/heroes', {});
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(req, () => {
-          return of({
+        responseInterceptor(req, () =>
+          of({
             type: 4,
             body: { id: '1', superhero: 'Batman' },
             status: 200,
             statusText: 'OK',
             url: '/api/heroes',
-          } as any);
-        }).subscribe(() => {
+          } as any)
+        ).subscribe(() => {
           expect(messageService.add).toHaveBeenCalledWith({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -53,19 +53,19 @@ describe('responseInterceptor', () => {
   });
 
   describe('successful PUT requests', () => {
-    it('should show success message for PUT request', (done) => {
+    it('should show success message for PUT request', done => {
       const req = new HttpRequest('PUT', '/api/heroes/1', {});
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(req, () => {
-          return of({
+        responseInterceptor(req, () =>
+          of({
             type: 4,
             body: { id: '1', superhero: 'Superman' },
             status: 200,
             statusText: 'OK',
             url: '/api/heroes/1',
-          } as any);
-        }).subscribe(() => {
+          } as any)
+        ).subscribe(() => {
           expect(messageService.add).toHaveBeenCalledWith({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -79,19 +79,19 @@ describe('responseInterceptor', () => {
   });
 
   describe('successful DELETE requests', () => {
-    it('should show success message for DELETE request', (done) => {
+    it('should show success message for DELETE request', done => {
       const req = new HttpRequest('DELETE', '/api/heroes/1', null);
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(req, () => {
-          return of({
+        responseInterceptor(req, () =>
+          of({
             type: 4,
             body: {},
             status: 200,
             statusText: 'OK',
             url: '/api/heroes/1',
-          } as any);
-        }).subscribe(() => {
+          } as any)
+        ).subscribe(() => {
           expect(messageService.add).toHaveBeenCalledWith({
             severity: 'success',
             summary: 'Operación exitosa',
@@ -105,39 +105,39 @@ describe('responseInterceptor', () => {
   });
 
   describe('GET requests', () => {
-    it('should not show success message for GET request', (done) => {
+    it('should not show success message for GET request', done => {
       const req = new HttpRequest('GET', '/api/heroes', null);
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(req, () => {
-          return of({
+        responseInterceptor(req, () =>
+          of({
             type: 4,
             body: [],
             status: 200,
             statusText: 'OK',
             url: '/api/heroes',
-          } as any);
-        }).subscribe(() => {
+          } as any)
+        ).subscribe(() => {
           expect(messageService.add).not.toHaveBeenCalled();
           done();
         });
       });
     });
 
-    it('should pass through GET response without messages', (done) => {
+    it('should pass through GET response without messages', done => {
       const req = new HttpRequest('GET', '/api/heroes', null);
       const expectedData = [{ id: '1', superhero: 'Batman' }];
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(req, () => {
-          return of({
+        responseInterceptor(req, () =>
+          of({
             type: 4,
             body: expectedData,
             status: 200,
             statusText: 'OK',
             url: '/api/heroes',
-          } as any);
-        }).subscribe((event: any) => {
+          } as any)
+        ).subscribe((event: any) => {
           expect(event.body).toEqual(expectedData);
           expect(messageService.add).not.toHaveBeenCalled();
           done();
@@ -147,7 +147,7 @@ describe('responseInterceptor', () => {
   });
 
   describe('error handling', () => {
-    it('should show error message on request failure', (done) => {
+    it('should show error message on request failure', done => {
       const req = new HttpRequest('GET', '/api/heroes/999', null);
       const errorObj = { status: 404, statusText: 'Not Found' };
 
@@ -167,7 +167,7 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should navigate to error page on request failure', (done) => {
+    it('should navigate to error page on request failure', done => {
       const req = new HttpRequest('GET', '/api/heroes/999', null);
       const errorObj = { status: 404, statusText: 'Not Found' };
 
@@ -182,7 +182,7 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should show error message on 500 error', (done) => {
+    it('should show error message on 500 error', done => {
       const req = new HttpRequest('POST', '/api/heroes', {});
       const errorObj = { status: 500, statusText: 'Internal Server Error' };
 
@@ -202,7 +202,7 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should navigate to error page on 500 error', (done) => {
+    it('should navigate to error page on 500 error', done => {
       const req = new HttpRequest('POST', '/api/heroes', {});
       const errorObj = { status: 500, statusText: 'Internal Server Error' };
 
@@ -217,7 +217,7 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should show error message on 403 error', (done) => {
+    it('should show error message on 403 error', done => {
       const req = new HttpRequest('DELETE', '/api/heroes/1', null);
       const errorObj = { status: 403, statusText: 'Forbidden' };
 
@@ -237,7 +237,7 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should navigate to error page on 403 error', (done) => {
+    it('should navigate to error page on 403 error', done => {
       const req = new HttpRequest('DELETE', '/api/heroes/1', null);
       const errorObj = { status: 403, statusText: 'Forbidden' };
 
@@ -252,14 +252,14 @@ describe('responseInterceptor', () => {
       });
     });
 
-    it('should re-throw the error after handling', (done) => {
+    it('should re-throw the error after handling', done => {
       const req = new HttpRequest('GET', '/api/heroes', null);
       const errorObj = { status: 404, statusText: 'Not Found' };
 
       TestBed.runInInjectionContext(() => {
         responseInterceptor(req, () => throwError(() => errorObj)).subscribe(
           () => fail('should have failed'),
-          (error) => {
+          error => {
             expect(error).toEqual(errorObj);
             done();
           }
@@ -269,7 +269,7 @@ describe('responseInterceptor', () => {
   });
 
   describe('request method detection', () => {
-    it('should only show messages for POST, PUT, DELETE', (done) => {
+    it('should only show messages for POST, PUT, DELETE', done => {
       const postReq = new HttpRequest('POST', '/api/heroes', {});
       const putReq = new HttpRequest('PUT', '/api/heroes/1', {});
       const deleteReq = new HttpRequest('DELETE', '/api/heroes/1', null);
@@ -290,13 +290,19 @@ describe('responseInterceptor', () => {
       };
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(postReq, () => of(response)).subscribe(() => checkDone());
-        responseInterceptor(putReq, () => of(response)).subscribe(() => checkDone());
-        responseInterceptor(deleteReq, () => of(response)).subscribe(() => checkDone());
+        responseInterceptor(postReq, () => of(response)).subscribe(() =>
+          checkDone()
+        );
+        responseInterceptor(putReq, () => of(response)).subscribe(() =>
+          checkDone()
+        );
+        responseInterceptor(deleteReq, () => of(response)).subscribe(() =>
+          checkDone()
+        );
       });
     });
 
-    it('should not show messages for other methods', (done) => {
+    it('should not show messages for other methods', done => {
       const getReq = new HttpRequest('GET', '/api/heroes', null);
       const patchReq = new HttpRequest('PATCH', '/api/heroes/1', {});
       const response = {
@@ -316,8 +322,12 @@ describe('responseInterceptor', () => {
       };
 
       TestBed.runInInjectionContext(() => {
-        responseInterceptor(getReq, () => of(response)).subscribe(() => checkDone());
-        responseInterceptor(patchReq, () => of(response)).subscribe(() => checkDone());
+        responseInterceptor(getReq, () => of(response)).subscribe(() =>
+          checkDone()
+        );
+        responseInterceptor(patchReq, () => of(response)).subscribe(() =>
+          checkDone()
+        );
       });
     });
   });

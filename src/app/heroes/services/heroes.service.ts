@@ -4,7 +4,7 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Hero } from '../interfaces/hero.interface';
@@ -60,12 +60,8 @@ export class HeroesService {
   /**
    * Elimina un héroe de la API.
    * @param id - ID del héroe a eliminar
-   * @returns Observable con el resultado de la operación (true si fue exitoso)
    */
-  public deleteHeroById(id: string): Observable<boolean> {
-    return this._http.delete(`${this._apiUrl}/${id}`).pipe(
-      map(() => true),
-      catchError(() => of(false))
-    );
+  public deleteHeroById(id: string): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/${id}`);
   }
 }
